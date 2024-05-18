@@ -150,7 +150,7 @@ public class TruckerSimulator extends JFrame{
                 }*/
             }
         });
-        cycle = new Timer(10000, e -> {
+        cycle = new Timer(120000, e -> {
             day = !day;
             dp.repaint();
         });
