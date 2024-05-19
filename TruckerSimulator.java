@@ -39,7 +39,6 @@ public class TruckerSimulator extends JFrame{
 
     //LocalTime time = LocalTime.now();
 
-
     /*class Obstacle {
         int position;
         int lane;
@@ -77,7 +76,6 @@ public class TruckerSimulator extends JFrame{
         JOptionPane.showMessageDialog(this, "ПРОИГРЫШ!!!!!!");
     }*/
 
-
     public TruckerSimulator(){
         final int a = (int)( Math.random() * 300 + 0 );
         eles[0] = a;
@@ -103,7 +101,6 @@ public class TruckerSimulator extends JFrame{
             int randomLane = (int)(Math.random() * 3) - 1;
             obstacles.add(new Obstacle(randomPosition, randomLane * 8));
         }*/
-
 
         for (int i = 0; i < 9000000; i++) {
 
@@ -131,7 +128,6 @@ public class TruckerSimulator extends JFrame{
 
         Timer timer = new Timer(10, new AbstractAction() {
             public void actionPerformed(ActionEvent e) {
-
                 Y += V;
                 dp.repaint();
                 /*if (!GameOver) {
@@ -197,7 +193,6 @@ public class TruckerSimulator extends JFrame{
                     if(V > 650) V -= 100;
                 }
             });
-
         }
         protected void paintComponent( Graphics g ){
             super.paintComponent( g );
@@ -225,7 +220,6 @@ public class TruckerSimulator extends JFrame{
                 clr2 = "#006400";
                 clr3 = "#555555";
             }
-
             for (int i = sx; i < sx + 300; i++) {
                 Line l = lines.get(i % N);
                 l.project(X - (int)x, ch, Y);
