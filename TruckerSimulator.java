@@ -18,12 +18,12 @@ import javazoom.jl.player.Player;
 
 
 public class TruckerSimulator extends JFrame{
-    int N;
-    int w = 1600;
-    int h = 768;
-    int X = 0;
-    int Y = 0;
-    int V = 1000;
+    private final int N;
+    private final int w = 1600;
+    private final int h = 768;
+    private int X = 0;
+    private int Y = 0;
+    private int V = 1000;
     public boolean day = true;
     final int ele = (int)( Math.random() * 100 + 15 );
     final int turnL = (int)( Math.random() * 30 + 10 );
@@ -38,8 +38,6 @@ public class TruckerSimulator extends JFrame{
     int[] eles = new int[ele];
 
     //LocalTime time = LocalTime.now();
-    Timer timer;
-    Timer cycle;
 
 
     /*class Obstacle {
@@ -131,7 +129,7 @@ public class TruckerSimulator extends JFrame{
         }
         N = lines.size();
 
-        timer = new Timer(10, new AbstractAction() {
+        Timer timer = new Timer(10, new AbstractAction() {
             public void actionPerformed(ActionEvent e) {
 
                 Y += V;
@@ -150,7 +148,7 @@ public class TruckerSimulator extends JFrame{
                 }*/
             }
         });
-        cycle = new Timer(120000, e -> {
+        Timer cycle = new Timer(120000, e -> {
             day = !day;
             dp.repaint();
         });
@@ -209,29 +207,24 @@ public class TruckerSimulator extends JFrame{
             int sx = Y / h;
             int ch = 1500 + (int) lines.get( sx ).y;
 
-            int c1 ;
-            int c2;
-            int c3;
-            int c4;
+            String clr1;
+            String clr2;
+            String clr3;
 
             double x = 0;
             double dx = 0;
             double maxY = h;
 
-
             if( day ){
-                c1 = 255;
-                c2 = 16;
-                c3 = 200;
-                c4 = 180;
+                clr1 = "#10c810";
+                clr2 = "#00b400";
+                clr3 = "#ffffff";
             }
             else{
-                c1 = 85;
-                c2 = 0;
-                c3 = 128;
-                c4 = 100;
+                clr1 = "#008000";
+                clr2 = "#006400";
+                clr3 = "#555555";
             }
-
 
             for (int i = sx; i < sx + 300; i++) {
                 Line l = lines.get(i % N);
@@ -240,11 +233,10 @@ public class TruckerSimulator extends JFrame{
                 dx += l.curve;
                 if ( l.Y > 0 && l.Y < maxY ) {
                     maxY = l.Y;
-
                     Color road = Color.black;
-                    Color grass = ( ( i / 2 ) % 2 ) == 0 ? new Color( c2, c3, c2 ) : new Color(0, c4, 0);
-                    Color rumble = new Color(c1, c1, c1);
-                    Color markup = ( ( i / 2 ) % 2 ) == 0 ? new Color( c1, c1, c1 ) : Color.black;
+                    Color grass = ( ( i / 2 ) % 2 ) == 0 ? Color.decode( clr1 ) : Color.decode( clr2 );
+                    Color rumble = Color.decode( clr3 );
+                    Color markup = ( ( i / 2 ) % 2 ) == 0 ? Color.decode( clr3 ) : Color.black;
                     Line p;
 
                     if( i == 0 ) p = l;
@@ -257,7 +249,6 @@ public class TruckerSimulator extends JFrame{
                     dq(g, road, (int) p.X, (int) p.Y, (int) (p.W * 0.7), (int) l.X, (int) l.Y, (int) (l.W* 0.7));
                 }
             }
-
             /*for (Obstacle obstacle : obstacles) {
                 int lineIndex = obstacle.position / h;
                 if (lineIndex >= sx && lineIndex < sx + 300) {
@@ -266,7 +257,6 @@ public class TruckerSimulator extends JFrame{
                     obstacle.draw(g, line);
                 }
             }*/
-
             try{
                 if(day)g.drawImage(ImageIO.read(new File("src\\day.jpg")), 0, 0, this);
                 if(!day)g.drawImage(ImageIO.read(new File("src\\night.jpg")), 0, 0, this);
@@ -275,7 +265,6 @@ public class TruckerSimulator extends JFrame{
                 e.printStackTrace();
             }
         }
-
         void dq( Graphics g, Color c, int x1, int y1, int w1, int x2, int y2, int w2 ){
             int[] x9Points = { x1 - w1, x2 - w2, x2 + w2, x1 + w1 };
             int[] y9Points = { y1, y2, y2, y1 };
@@ -296,18 +285,18 @@ public class TruckerSimulator extends JFrame{
         Player player = new Player ( urlConnection.getInputStream() );
         player.play();
     }
-
     class Line{
-        double x, y, z;
-        double X, Y, W;
-        double scale, curve;
+        private final double x;
+        private double y;
+        private double z;
+        private double X, Y, W;
+        private double curve;
         public Line() { curve = x = y = z = 0; }
         void project( int camX, int camY, int camZ ) {
-            scale = 0.84 / ( z - camZ );
+            double scale = 0.84 / (z - camZ);
             X = ( 1 + scale * ( x - camX) ) * w / 2;
             Y = ( 1 - scale * ( y - camY) ) * h / 2;
             W = scale * h * w / 2;
         }
-
     }
 }
